@@ -25,7 +25,7 @@ def sort_nicely(l):
 #ffmpeg output function for converting to video
 def output(fps,pre,oFol,oName,bitrate):
     ffmpeg_path= 'ffmpeg'
-    cmd = ffmpeg_path+' -y -framerate '+str(fps)+' -i '+oFol+'\\' +pre+r'_%05d.png' + ' -b '+str(bitrate)+' '+oName
+    cmd = ffmpeg_path+' -y -framerate '+str(fps)+' -i '+oFol+'\\' +pre+r'_%05d.png' + ' -b '+str(bitrate)+'k '+oName
     print(cmd)
     return subprocess.check_output(cmd, shell=True)
 
@@ -59,6 +59,12 @@ def extract(iFol,oFol,pre,repeats):
 
 #extract files and export video
 def runExtractor(iFol,oFol,pre,repeats,export,fps,oVid,oVidFol,bitrate,deleteImg):
+    fps=int(fps)
+    bitrate=int(bitrate)
+    deleteImg=int(deleteImg)
+    export=int(export)
+    repeats=int(repeats)
+    
     if(extract(iFol,oFol,pre,repeats)!=0):
         print("Error extracting images")
         return "extractionError"
@@ -81,7 +87,6 @@ def runExtractor(iFol,oFol,pre,repeats,export,fps,oVid,oVidFol,bitrate,deleteImg
                 return "imgDeleteError : %s - %s." % (e.filename, e.strerror)
     return 0
 
-                
 if __name__ == "__main__":
     #file paths--------------------------------------------------------
     iFol=r'C:\Users\user\Pictures\inputimagefolder'
@@ -93,14 +98,14 @@ if __name__ == "__main__":
     repeats = 1
 
     #export options, requres ffmpeg-----------------------------------
-    export=True
+    export=1
     fps=12
     oVid="videoname.avi"
     oVidFol=r':\Users\user\Videos'
-    bitrate='51200k'
+    bitrate='51200'
 
     #delete images after done if exporting(note this will require oFol and oVidFol to be different)
-    deleteImg=True
+    deleteImg=1
     runExtractor(iFol,oFol,pre,repeats,export,fps,oVid,oVidFol,bitrate,deleteImg)
 
 
